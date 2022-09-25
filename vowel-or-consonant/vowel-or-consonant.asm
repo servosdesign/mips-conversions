@@ -1,10 +1,10 @@
 # Program description: Check whether a character is a vowel or a consonant
 
-        .data                           #setting up all string data used in program
-msg1:   .asciiz "Enter an alphabet: "    
-msg2:   .asciiz " is a vowel."
-msg3:   .asciiz " is a consonant."
-newLine: .asciiz "\n"
+.data                                   #setting up all string data used in program
+        msg1:   .asciiz "Enter an alphabet: "    
+        msg2:   .asciiz " is a vowel."
+        msg3:   .asciiz " is a consonant."
+        newLine: .asciiz "\n"
 
         .text
         .globl main
