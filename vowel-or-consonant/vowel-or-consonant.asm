@@ -41,39 +41,39 @@ main:
         addi $t1, $0, 85                # Load $t1 with 85 that will be compared against 0($sp)
         beq $t1, $v0, isVowel           # Compare if it's = 85, then go to isVowel
 
-        bne $t1, $v0, isConsonant       # if all of these aren't true then it's a consonant
+        bne     $t1, $v0, isConsonant   # if all of these aren't true then it's a consonant
 
 isVowel: 
-        li $v0, 4                       # Enter newLine
-        la $a0, newLine
+        li      $v0, 4                  # Enter newLine
+        la      $a0, newLine
         syscall
 
-        li $v0, 4                       # Display user entered alphabet
-        la $a0, 0($sp)
+        li      $v0, 4                  # Display user entered alphabet
+        la      $a0, 0($sp)
         syscall
 
-        li $v0, 4                       # Display is a vowel prompt
-        la $a0, msg2
+        li      $v0, 4                  # Display is a vowel prompt
+        la      $a0, msg2
         syscall
         
-        addi $v0, $0, 10                # Exit program
+        addi    $v0, $0, 10             # Exit program
 	syscall
         j exit
 
 isConsonant:
-        li $v0, 4                       # Enter newLine
-        la $a0, newLine
+        li      $v0, 4                  # Enter newLine
+        la      $a0, newLine
         syscall
 
-        li $v0, 4                       # Display user entered alphabet
-        la $a0, 0($sp)
+        li      $v0, 4                  # Display user entered alphabet
+        la      $a0, 0($sp)
         syscall
                                        
-        li $v0, 4                       # Display is a consonant prompt               
-        la $a0, msg3
+        li      $v0, 4                  # Display is a consonant prompt               
+        la      $a0, msg3
         syscall
 
-        addi $v0, $0, 10                # Exit program
+        addi    $v0, $0, 10             # Exit program
 	syscall
         j exit
 
