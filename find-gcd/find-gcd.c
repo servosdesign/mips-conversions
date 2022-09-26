@@ -10,7 +10,7 @@ int main()
   printf("Enter two whole numbers greater than 0: ");
   scanf("%d %d", &n1, &n2);
   for (i = 1; i <= n1 && i <= n2; ++i)
-  { // [3.5 mark]
+  {
     // ensure if i is a factor of both integers
     if (n1 % i == 0 && n2 % i == 0)
       gcd = i;

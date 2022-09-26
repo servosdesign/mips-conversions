@@ -1,56 +1,42 @@
-# Program description: Print ASCII characters between the given range
+# Program description: Find GCD of two whole numbers
 
 .data
-        msg1:   .asciiz "Enter two whole numbers greater than 0: "  
-        msg2:   .asciiz "G.C.D of "
-        msg3:   .asciiz " and "
-        msg4:   .asciiz " is "
+        msg1: .asciiz "Enter two whole numbers greater than 0: "
+        msg2: .asciiz "G.C.D of "
+        msg3: .asciiz " and "
+        msg4: .asciiz " is "
 
-        .text
         .globl main
-main:  
-        addi    $v0, $0, 4              # Prompt message msg1
-	la      $a0, msg1               
-	syscall	
+        .text
+main:
+
+        la      $a0, msg1               # Prompt message msg1
+        li      $v0, 4             
+        syscall                
 
         li      $v0, 5                  # Take user integer n1 input
-        syscall
-        move    $t0, $v0                # Moving the n1 integer into $t0
+        syscall 
+        add     $t0, $0, $v0            # Moving the n1 integer into $t0   
 
-        li      $v0, 5                  # Read integer n2 input
-        syscall
-        move    $t1, $v0                # Moving the n2 integer into $t1
+        li      $v0, 5                  # Take user integer n2 input
+        syscall                
+        add     $t1, $0, $v0            # Moving the n2 integer into $t1
 
-        li      $t3, 1                  # i = 1
-loop:   
-        ble     $t3, $t0, also          # i <= n1
-also:
-        ble     $t3, $t1, inner         # i <= n2
-inner:                                  
-        rem     $t4, $t0, $t3           # n1 % i (remainder of n1 / i)
-        beq     $t4, 0, innerAlso       # if it equals == 0 go innerAlso
-innerAlso:                                        
-        rem     $t5, $t1, $t3           # n2 % i remainder of n2 / i)
-        beq     $t5, 0, secondInner     # if it equals == 0 go secondInner
-secondInner:
-                                        # gcd = i
-                                        # storing gcd in the stack
-
-        addi    $t3, $t3, 1             # i = i + i
-        
-        bgt     $t3, $t0, final         # if i > n1 go to final tag
-        jr loop
-final:
-        bgt     $t3, $t1, output        # if i > n2 go to output tag
-
-output:                                   
+        add     $t3, $t0, 0             # storing n1
+        add     $t4, $t1, 0             # storing n2
+loop: 
+        div     $t0, $t1                # Dividing n1 / n2
+        mfhi    $t2                     # Store the hi of remainder in $t2
+        add     $t0, $0, $t1            # n1 = n2
+        add     $t1, $0, $t2            # n2 = hi of remainder 
+        bne     $t1, $0, loop           # if n2 is not equal to 0 branch back up to loop      
 
         addi    $v0, $0, 4              # Prompt message msg2
 	la      $a0, msg2               
 	syscall	    
                                        
-        li      $v0, 1                  # Printing iteger assigment
-        move    $a0, $t0                # Printing n1
+        li      $v0, 1                  # Printing integer assigment
+        move    $a0, $t3                # Printing n1
         syscall
 
         addi    $v0, $0, 4              # Prompt message msg3
@@ -58,18 +44,20 @@ output:
 	syscall	    
                                         
         li      $v0, 1                  # Printing iteger assigment
-        move    $a0, $t1                # Printing n2
+        move    $a0, $t4                # Printing n2
         syscall
 
         addi    $v0, $0, 4              # Prompt message msg4
 	la      $a0, msg4               
 	syscall	   
         
-                                        # Printing iteger
-                                        # bringing gcd out from stack
-                                        # printing out gcd
-                                        
-exit: 
+        add     $a0, $0, $t0            # Printing the gcd calculated
+        li      $v0, 1
+        syscall 
 
         li      $v0, 10                 # syscall to end the program
         syscall
+
+
+
+
