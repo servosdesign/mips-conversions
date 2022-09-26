@@ -16,8 +16,8 @@
         .globl main
 main:    
         addi    $v0, $0, 4
-	      la      $a0, msg1               # Prompt message msg1
-	      syscall	
+	la      $a0, msg1               # Prompt message msg1
+	syscall	
                                         # Take user lower range character input
         li      $v0, 12                 # read_character
         syscall
@@ -30,8 +30,8 @@ main:
         syscall
 
         addi    $v0, $0, 4
-	      la      $a0, msg2               # Prompt message msg2
-	      syscall	
+	la      $a0, msg2               # Prompt message msg2
+	syscall	
                                         # Take user lowerRange character input
         li      $v0, 12                 # read_character
         syscall
@@ -44,24 +44,24 @@ main:
         syscall
 
         addi    $v0, $0, 4
-	      la      $a0, msg3               # Prompt message msg3
-	      syscall	
+	la      $a0, msg3               # Prompt message msg3
+	syscall	
 
         li      $v0, 4                  # Display user entered lowerRange character
         la      $a0, lowerRange
         syscall
 
         addi    $v0, $0, 4
-	      la      $a0, msg4               # Prompt message msg4
-	      syscall
+	la      $a0, msg4               # Prompt message msg4
+	syscall
 
         li      $v0, 4                  # Display user entered upperRange character
         la      $a0, upperRange
         syscall
 
         addi    $v0, $0, 4
-	      la      $a0, msg5               # Prompt message msg5
-	      syscall
+	la      $a0, msg5               # Prompt message msg5
+	syscall
       
         lb      $t2, lowerRange         # c = lowerRange 
         addiu   $t2, $t2, 1             # c = lowerRange + 1
