@@ -11,8 +11,8 @@
         .text
 main:   
         addi    $v0, $0, 4
-	      la      $a0, msg1               # Prompt message msg1
-	      syscall	
+	la      $a0, msg1               # Prompt message msg1
+	syscall	
 
         li      $v0, 4                  # Enter newLine
         la      $a0, newLine

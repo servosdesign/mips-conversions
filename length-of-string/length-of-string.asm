@@ -12,8 +12,8 @@
         .text
 main:  
         addi    $v0, $0, 4
-	      la      $a0, msg1               # Prompt message msg1
-	      syscall	
+	la      $a0, msg1               # Prompt message msg1
+	syscall	
 
         li      $v0, 4                  # Enter newLine
         la      $a0, newLine
@@ -39,8 +39,8 @@ exit:
         syscall
 
         addi    $v0, $0, 4
-	      la      $a0, msg2               # Prompt message msg2
-	      syscall	
+        la      $a0, msg2               # Prompt message msg2
+	syscall	
 
         li      $v0, 1                  # Printing iteger assigment
         move    $a0, $s1                # Printing the length of the input string
@@ -51,8 +51,8 @@ exit:
         syscall
 
         addi    $v0, $0, 4
-	      la      $a0, msg3               # Prompt message msg3 
-	      syscall	
+	la      $a0, msg3               # Prompt message msg3 
+	syscall	
 
         addi    $v0, $0, 1              # Display the array memory location in integer form
         la      $a0, array
