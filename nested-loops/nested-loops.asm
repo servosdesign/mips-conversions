@@ -5,24 +5,19 @@
         space:  .asciiz " "
         newLine: .asciiz "\n"
 
-        n: .word 10                   # Storing lowerRange user entered character here
+        n: .word 0                   # Storing lowerRange user entered character here
+        spacer: .asciiz " "          # Spacer for printing
 
         .text
         .globl main
 main:    
         addi    $v0, $0, 4
-	      la      $a0, msg1               # Prompt message msg1
-	      syscall	
+	la      $a0, msg1               # Prompt message msg1
+	syscall	
 
-        lw $s0, n                       # $s0 = n
-  
-        li      $s3, 0                  # i = 0
-        li      $s4, 0                  # j = 0
-        li      $s5, 1                  # k = 1
-  
-
-loop1:
-        
+        li $v0, 5
+        syscall
+        move $t0, $v0
 
          
 
