@@ -6,80 +6,56 @@ space: .asciiz " "
 newline: .asciiz "\n"
 
 clear:    .float   0.0
-n: .word 0                                          # Storing lowerRange user entered character here
+n: .word 0                                              # Storing lowerRange user entered character here
 
 .text
 .globl main
 
 main:
-    addi    $v0,    $0,         4
-    la      $a0,    msg1                            # Prompt message msg1
+    addi    $v0,            $0,         4
+    la      $a0,            msg1                        # Prompt message msg1
     syscall 
 
-    li      $v0,    5                               # Taking user input
+    li      $v0,            5                           # Taking user input
     syscall 
-    move    $t0,    $v0                             # Storing it for first half
-    move    $t6,    $t0                             # Storing it for second half
+    move    $t7,            $v0                         # Storing n for first half
+    move    $t6,            $v0                         # Storing n for second half
 
-    add     $s1,    $zero,      $t0                 # Loop n times
-    addi    $t0,    $zero,      1                   # i = 1
+    add     $s1,            $zero,      $t7             # Loop n times
 
-outerloop:
-    addi    $t1,    $zero,      1                   # j = 1
+    addi    $t0,            $zero,      0               # i = 0
+    addi    $t1,            $zero,      0               # j = 0
+    addi    $t3,            $zero,      1               # k = 1
 
-innerloop:
+# Printing the upper part of the pattern.
 
-    add     $a0,    $zero,      $t1                 # $a0 = j
-    li      $v0,    1
-    syscall 
+firstLoop:
+    blt     $t0,            $t7,        firstInner      # i < n
+    j       firstLoop
 
-    la      $a0,    space                           # Space
-    li      $v0,    4
-    syscall 
+firstInner:
+    blt     $t1,            $t0,        secondInner     # j < i
 
-    addi    $t1,    $t1,        1                   # Increment j
-
-    ble     $t1,    $t0,        innerloop           # If j <= i, jump to innerloop
-
-    la      $a0,    newline                         # Newline
-    li      $v0,    4
+    la      $a0,            space                       # Printing blank space
     syscall 
 
-    addi    $t0,    $t0,        1                   # increment i
-                                                    # if i <= 4, goto outerloop
-    ble     $t0,    $s1,        outerloop
+    j       firstInner
+secondInner:
+    sub     $t2,            $t7,        $t0             # n - i
+    ble     $t3,            $t2,        exit            # k <= n - i
 
-    li      $t3,    0
-    li      $t4,    0
+    li      $v0,            1
+    add     $a0,            $t3,        $zero           # Printing k
 
-SecondOuterLoop:
-    addi    $t6,    $zero,      1                   # i = 1
+    j       secondInner
 
-    add     $s1,    $zero,      $t6                 # Loop n times
-
-    addi    $t1,    $zero,      1                   # j = 1
-
-SecondInnerLoop:
-    add     $a0,    $zero,      $t1                 # $a0 = j
-    li      $v0,    1
+    la      $a0,            newline                     # Printing new line
     syscall 
 
-    la      $a0,    space                           # Space
-    li      $v0,    4
-    syscall 
-
-    addi    $t1,    $t1,        1                   # Increment j
-
-    ble     $t1,    $t0,        SecondInnerLoop     # If j <= i, jump to innerloop
-
-    la      $a0,    newline                         # Newline
-    li      $v0,    4
-    syscall 
-
-    addi    $t6,    $t6,        1                   # increment i
-                                                    # if i <= 4, goto outerloop
-    ble     $t6,    $s1,        SecondOuterLoop
+    addi    $t1,            $t1,        1               # j = j + 1
+    addi    $t0,            $t0,        1               # i = i + 1
+    addi    $t3,            $t3,        1               # k = k + 1
 
 exit:
-    li      $v0,    10
+    li      $v0,            10
     syscall 
