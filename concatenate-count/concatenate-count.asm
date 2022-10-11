@@ -7,7 +7,7 @@ msg3:       .asciiz     "Combined String: "
 msg4:   .asciiz "String with just alphabets: "
 msg5:   .asciiz "Number of Vowels in String: "
 msg6:  .asciiz "Number of Consonants in String: "
-
+vowel:      .asciiz     "aeiou"
 newline:    .asciiz     "\n"
 
 str1:    .space      256                                                            # User inputed str1
@@ -66,7 +66,7 @@ main:
     la      $a0,                        newline
     syscall 
 
-    jal     countVowelConsotant
+    jal     countVowelConsotant                                                     # Jumping to countVowelConsotant to check how many vowels and consonant in combined string
 
 userInput:
     li      $v0,                        8                                           # Reading string input
@@ -104,42 +104,43 @@ concatenateDone:
 
 removeNonAlphaCharacters:
     lb      $t1,                        0($t7)
-    beqz    $t1,                        print
+    beqz    $t1,                        inner
     li      $t2,                        1
     li      $t3,                        64
     li      $t4,                        96
 
-    slti    $s1,                        $t1,                        91              # check if char is between ascii value 64 and 91
+    slti    $s1,                        $t1,                        91              # $s1 < ascii value 64 and 91
     slt     $s2,                        $t3,                        $t1
 
     and     $s3,                        $s1,                        $s2
 
-    slti    $s4,                        $t1,                        123             # check if char is between ascii value 96 and 123
+    slti    $s4,                        $t1,                        123             # $s4 < ascii value 96 and 123
     slt     $s5,                        $t4,                        $t1
 
     and     $s6,                        $s4,                        $s5
 
-    or      $s7,                        $s3,                        $s6             # doing or if char is either between 64,91 and 96,122
+    or      $s7,                        $s3,                        $s6             # if char is either between 64,91 and 96,122
     beqz    $s7,                        update
-    sb      $t1,                        0($t9)                                      # then store it in char array
-    addi    $t9,                        $t9,                        1
+    sb      $t1,                        0($t9)                                      # Update new results in 0($t9)
+    addi    $t9,                        $t9,                        1               # Increment char index
     j       update
 
-update: addi $t7, $t7, 1
+update:
+    addi    $t7,                        $t7,                        1               # Move to next letter in string
     j       removeNonAlphaCharacters
 
-print: lb $t1, 0($t8)                                                               # get the bytes from compressed cahr array buffer2
-    bgt     $t8,                        $t9,                        nonAlphaReturn  # print the string
-    move    $a0,                        $t1
+inner:
+    lb      $t1,                        0($t8)
+    bgt     $t8,                        $t9,                        nonAlphaReturn  # if > then jump to nonAlphaReturn
+    move    $a0,                        $t1                                         # if not then store $t1 in $a0
 
-    addi    $t8,                        $t8,                        1
-    j       print
+    addi    $t8,                        $t8,                        1               # Incrementing inner loop
+    j       inner
+
 nonAlphaReturn:
-    jr      $ra
+    jr      $ra                                                                     # Return
 
 countVowelConsotant:
-
-
     la      $a0,                        msg4                                        # Printing msg4
     li      $v0,                        4
     syscall 
@@ -151,16 +152,47 @@ countVowelConsotant:
     la      $a0,                        newline
     syscall 
 
-    la      $a0,                        msg5                                        # Printing msg5
-    li      $v0,                        4
+    li      $s2,                        0                                           # Vowel counter
+    li      $s3,                        0                                           # Consonant counter
+    la      $s0,                        concatenatedNonAlphaString                  # Load pointer to the concatenatedNonAlphaString
+
+countInner:
+    lb      $t0,                        0($s0)                                      # Setting first string char in $t0 for loop
+    addiu   $s0,                        $s0,                        1               # Find next char in string
+    beqz    $t0,                        countDone                                   # Once reach end of string branch to
+
+    addi    $s3,                        $s3,                        1               # Increment consonant count
+    la      $s1,                        vowel                                       # Set pointer to the aeiou vowels in data
+
+vowelInner:
+    lb      $t1,                        0($s1)                                      # Testing first vowel
+    beqz    $t1,                        countInner                                  # Looping through the vowels
+    addiu   $s1,                        $s1,                        1               # Increment vowels
+    bne     $t0,                        $t1,                        vowelInner      # If it's a vowel then jump to vowelInner
+
+    addi    $s2,                        $s2,                        1               # Incremenet vowel counter
+    sub     $s3,                        $s3,                        1               # Decriment consonant count
+    j       countInner                                                              # Go to next string char
+
+countDone:
+    li      $v0,                        4                                           # Printing msg5
+    la      $a0,                        msg5
+    syscall 
+
+    li      $v0,                        1                                           # Printing vowel count
+    move    $a0,                        $s2
     syscall 
 
     li      $v0,                        4                                           # Printing newline
     la      $a0,                        newline
     syscall 
 
-    la      $a0,                        msg6                                        # Printing msg6
-    li      $v0,                        4
+    li      $v0,                        4                                           # Printing msg6
+    la      $a0,                        msg6
+    syscall 
+
+    li      $v0,                        1                                           # Printing consonant count
+    move    $a0,                        $s3
     syscall 
 
     li      $v0,                        10                                          # Exit program
